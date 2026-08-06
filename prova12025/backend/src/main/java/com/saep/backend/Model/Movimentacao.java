@@ -1,5 +1,6 @@
 package com.saep.backend.Model;
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -70,6 +71,11 @@ public class Movimentacao {
 
     public void setDataMovimentacao(LocalDate dataMovimentacao) {
         this.dataMovimentacao = dataMovimentacao;
+    }
+
+    public List<Movimentacao> save(Movimentacao movimentacao) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
 
 }

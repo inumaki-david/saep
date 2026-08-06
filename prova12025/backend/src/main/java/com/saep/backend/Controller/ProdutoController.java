@@ -22,8 +22,11 @@ import com.saep.backend.Repository.ProdutoRepository;
 @RequestMapping("/api/produtos")
 public class ProdutoController {
     
-    @Autowired
-    private ProdutoRepository produtoRepository;
+    private final ProdutoRepository produtoRepository;
+
+    ProdutoController(ProdutoRepository produtoRepository) {
+        this.produtoRepository = produtoRepository;
+    }
 
     //método para busca
     @GetMapping("/busca")

@@ -1,8 +1,8 @@
 package com.saep.backend.Model;
-import java.time.LocalDate;
-import java.util.List;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+
+import jakarta.persistence.*; //importanto todas as classe dentro da pasta persistence do jakarta
 
 @Entity
 public class Movimentacao {
@@ -24,7 +24,8 @@ public class Movimentacao {
     
     @Column(name = "data_movimetacao")
     private LocalDate dataMovimentacao;
-
+    
+    //gerar os Getters and Setters
     public Long getId() {
         return id;
     }
@@ -71,11 +72,6 @@ public class Movimentacao {
 
     public void setDataMovimentacao(LocalDate dataMovimentacao) {
         this.dataMovimentacao = dataMovimentacao;
-    }
-
-    public List<Movimentacao> save(Movimentacao movimentacao) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
 
 }

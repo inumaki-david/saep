@@ -9,17 +9,18 @@ public class Produto {
     private Long id;
     private String nome;
     private String descricao;
-
+    
     @Column(name = "estoque_atual")
     private Integer estoqueAtual;
-
+    
     @Column(name = "estoque_minimo")
     private Integer estoqueMinimo;
-
+    
+    //gerar getters and setters
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
@@ -55,6 +56,4 @@ public class Produto {
     public void setEstoqueMinimo(Integer estoqueMinimo) {
         this.estoqueMinimo = estoqueMinimo;
     }
-
-    
 }

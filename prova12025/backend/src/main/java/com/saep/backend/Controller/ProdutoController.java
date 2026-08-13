@@ -2,7 +2,6 @@ package com.saep.backend.Controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.saep.backend.Model.Produto;
 import com.saep.backend.Repository.ProdutoRepository;
-
 
 @RestController
 @RequestMapping("/api/produtos")
@@ -34,6 +32,11 @@ public class ProdutoController {
         return produtoRepository.findByNomeContainingIgnoreCase(termo);
     }
 
+    @GetMapping()
+    public List<Produto> getAll() {
+        return produtoRepository.findAll();
+    }
+    
     //método para criar novo produto    
     @PostMapping
     public Produto salvar(@RequestBody Produto produto){
@@ -56,4 +59,5 @@ public class ProdutoController {
         produtoRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
 }

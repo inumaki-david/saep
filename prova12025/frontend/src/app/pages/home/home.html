@@ -1,1 +1,14 @@
-<p>home works!</p>
+<nav class="navbar">
+    <span>Bem-vindo, {{nomeUsuario}}</span>
+    <!-- Interpolação em Angular, inserir atributos do TS no HTML -->
+     <button (click)="logout()">Sair</button>
+</nav>
+
+<div class="container">
+    <h2>Painel de Controle</h2> 
+    <div class="rotas">
+        <a href="/produtos">Cadastro de Produtos</a>
+        <a href="/estoque">Gestão de Estoque</a>
+    </div>
+</div>
+

@@ -1,9 +1,6 @@
 package com.saep.backend.Model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Usuario {
@@ -13,6 +10,8 @@ public class Usuario {
     private String nome;
     private String login;
     private String senha;
+    
+    //Gerar os Getter and Setters
     public Long getId() {
         return id;
     }
@@ -37,6 +36,4 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
-    
 }

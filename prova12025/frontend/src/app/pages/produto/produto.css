@@ -1,0 +1,163 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f8ff 0%, #dfeafe 100%);
+    color: #183153;
+}
+
+.container {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.voltar {
+    align-self: flex-start;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 999px;
+    background: #183153;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.voltar:hover {
+    transform: translateY(-2px);
+    background: #254b79;
+}
+
+.form,
+.tabela {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 18px 40px rgba(24, 49, 83, 0.12);
+}
+
+.form h4 {
+    margin: 0 0 1rem;
+    font-size: 1.3rem;
+    color: #183153;
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+form input {
+    padding: 0.9rem 1rem;
+    border: 1px solid #d7e3f7;
+    border-radius: 14px;
+    font-size: 1rem;
+    color: #183153;
+    background: #f9fbff;
+}
+
+form input:focus {
+    outline: none;
+    border-color: #4f7bd1;
+    box-shadow: 0 0 0 4px rgba(79, 123, 209, 0.16);
+}
+
+form button,
+.buscar button,
+.excluir {
+    padding: 0.9rem 1.2rem;
+    border: none;
+    border-radius: 14px;
+    background: #4f7bd1;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+form button:hover,
+.buscar button:hover,
+.excluir:hover {
+    transform: translateY(-1px);
+    background: #3461b7;
+}
+
+.buscar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.buscar input {
+    flex: 1;
+    max-width: 320px;
+    padding: 0.9rem 1rem;
+    border: 1px solid #d7e3f7;
+    border-radius: 14px;
+    font-size: 1rem;
+    color: #183153;
+    background: #f9fbff;
+}
+
+.buscar input:focus {
+    outline: none;
+    border-color: #4f7bd1;
+    box-shadow: 0 0 0 4px rgba(79, 123, 209, 0.16);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #eaf2ff;
+    color: #183153;
+    text-align: left;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+}
+
+td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid #eef3fb;
+    color: #335173;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.excluir {
+    background: #ef4d4d;
+    padding: 0.7rem 0.9rem;
+}
+
+.excluir:hover {
+    background: #d63636;
+}
+
+@media (max-width: 700px) {
+    :host {
+        padding: 1rem;
+    }
+
+    .form,
+    .tabela {
+        padding: 1rem;
+    }
+
+    .buscar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .buscar input {
+        max-width: none;
+    }
+}

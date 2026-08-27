@@ -1,1 +1,14 @@
-<p>layout works!</p>
+<div class="shell">
+	<aside class="sidebar">
+		<div class="sidebar-brand"><span>OF</span><div>oficina<br /><b>agenda</b></div></div>
+		<p class="nav-label">MENU PRINCIPAL</p>
+		<button [class.active]="section === 'visao-geral'" (click)="navegar('visao-geral')">◈ <span>Visão geral</span></button>
+		<button [class.active]="section === 'clientes'" (click)="navegar('clientes')">♙ <span>Clientes</span></button>
+		<button [class.active]="section === 'agendamentos'" (click)="navegar('agendamentos')">▦ <span>Agendamentos</span></button>
+		<div class="sidebar-foot"><span class="status-dot"></span> API conectada</div>
+	</aside>
+	<div class="main-area">
+		<header><div><span class="top-kicker">PAINEL DE CONTROLE</span><h2>Olá, {{ usuario.split(' ')[0] }}.</h2></div><button class="logout" (click)="logout.emit()">Sair <span>↗</span></button></header>
+		<ng-content></ng-content>
+	</div>
+</div>

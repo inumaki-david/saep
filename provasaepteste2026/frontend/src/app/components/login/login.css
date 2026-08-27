@@ -1,0 +1,22 @@
+:host { display: block; min-height: 100vh; }
+.login-page { min-height: 100vh; display: grid; grid-template-columns: minmax(320px, 560px) 1fr; background: #f4f1e9; }
+.login-panel { padding: 10vh 10%; background: #fff; } .brand-mark { width: 52px; height: 52px; background: #ef672f; color: white; display: grid; place-items: center; font: bold 20px Georgia, serif; border-radius: 50%; margin-bottom: 50px; }
+.eyebrow { color: #ef672f; font-size: 11px; letter-spacing: 2px; font-weight: bold; } h1 { font: normal clamp(38px, 5vw, 62px) Georgia, serif; line-height: 1.02; margin: 22px 0; } h1 em { color: #ef672f; } .intro { color: #748080; line-height: 1.6; max-width: 350px; margin-bottom: 38px; }
+form { display: grid; gap: 9px; max-width: 370px; }
+label { color: #53605f; font-size: 12px; font-weight: bold; margin-top: 8px; }
+input { border: 1px solid #cbd5d2; padding: 14px; font: inherit; }
+form button { background: #172026; color: white; padding: 15px; text-align: left; margin-top: 14px; }
+form button span { float: right; font-size: 20px; }
+form button:disabled { opacity: .55; cursor: not-allowed; }
+.login-panel small { display: block; color: #9aa4a1; margin-top: 30px; }
+.login-aside { display: flex; flex-direction: column; justify-content: end; padding: 10%; background: #172026; color: white; background-image: linear-gradient(135deg, #172026 0 60%, #28515a 60%); }
+.login-aside span { color: #ef672f; font: 50px Georgia, serif; }
+.login-aside strong { font: 42px Georgia, serif; line-height: 1.05; margin: 20px 0; }
+.login-aside p { color: #b6c1bd; max-width: 300px; line-height: 1.6; }
+@media (max-width: 700px) {
+	.login-page { display: block; }
+	.login-panel { padding: 40px 25px 60px; }
+	.brand-mark { margin-bottom: 35px; }
+	.login-aside { min-height: 250px; padding: 30px 25px; }
+	.login-aside strong { font-size: 30px; }
+}

@@ -4,12 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms'; // Permite usar [(ngModel)] nos inputs
 
 import { AppRoutingModule } from './app-routing-module';
-import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { LayoutComponent } from './components/layout/layout.component';
+import { App } from './app';
+import { Login } from './components/login/login';
+import { Layout } from './components/layout/layout';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, LayoutComponent],
+  declarations: [App, Login, Layout],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -17,6 +17,6 @@ import { LayoutComponent } from './components/layout/layout.component';
     FormsModule, // Necessário para os formulários
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [App],
 })
 export class AppModule {}

@@ -1,9 +1,19 @@
+require("dotenv").config(); // Carrega as variáveis do .env no topo do projeto
+const express = require("express");
+const cors = require("cors");
+const pool = require("./db");
+
 const express = require("express");
 const cors = require("cors");
 const pool = require("./db");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: '*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  allowedHeaders: ['Content-Type', 'Authorization'] 
+}));
+
 app.use(express.json());
 
 app.get("/", (req, res) => res.json({ nome: "SAEP Oficina API", status: "online" }));
@@ -19,6 +29,7 @@ app.post("/login", async (req, res) => {
     if (!rows[0]) return res.status(401).json({ erro: "E-mail ou senha inválidos." });
     res.json(rows[0]);
   } catch (error) {
+    console.error("Erro no login:", error); // Log do erro real
     res.status(500).json({ erro: "Não foi possível realizar o login." });
   }
 });
@@ -26,11 +37,10 @@ app.post("/login", async (req, res) => {
 // Rotas de Clientes
 app.get("/clientes", async (req, res) => {
   try {
-    const { rows } = await pool.query(
-      "SELECT * FROM clientes ORDER BY nome ASC",
-    );
+    const { rows } = await pool.query("SELECT * FROM clientes ORDER BY nome ASC");
     res.json(rows);
   } catch (error) {
+    console.error("Erro ao buscar clientes:", error); // Log do erro real
     res.status(500).json({ erro: "Erro ao buscar clientes" });
   }
 });
@@ -44,11 +54,8 @@ app.post("/clientes", async (req, res) => {
     );
     res.status(201).json(rows[0]);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        erro: "Erro ao cadastrar cliente. Verifique se o documento já existe.",
-      });
+    console.error("Erro ao cadastrar cliente:", error); // Log do erro real
+    res.status(500).json({ erro: "Erro ao cadastrar cliente. Verifique se o documento já existe." });
   }
 });
 
@@ -62,6 +69,7 @@ app.put("/clientes/:id", async (req, res) => {
     if (!rows[0]) return res.status(404).json({ erro: "Cliente não encontrado." });
     res.json(rows[0]);
   } catch (error) {
+    console.error("Erro ao atualizar cliente:", error); // Log do erro real
     res.status(409).json({ erro: "Não foi possível atualizar. O documento pode já existir." });
   }
 });
@@ -71,6 +79,7 @@ app.delete("/clientes/:id", async (req, res) => {
     await pool.query("DELETE FROM clientes WHERE id = $1", [req.params.id]);
     res.status(204).send();
   } catch (error) {
+    console.error("Erro ao deletar cliente:", error); // Log do erro real
     res.status(409).json({ erro: "Cliente possui histórico e não pode ser excluído." });
   }
 });
@@ -81,11 +90,12 @@ app.get("/recursos", async (req, res) => {
     const { rows } = await pool.query("SELECT * FROM recursos");
     res.json(rows);
   } catch (error) {
+    console.error("Erro ao buscar recursos:", error); // Log do erro real
     res.status(500).json({ erro: "Erro ao buscar recursos" });
   }
 });
 
-// Rotas de Agendamentos (Com Regra de Negócio)
+// Rotas de Agendamentos
 app.get("/agendamentos", async (req, res) => {
   try {
     const query = `
@@ -98,18 +108,13 @@ app.get("/agendamentos", async (req, res) => {
     const { rows } = await pool.query(query);
     res.json(rows);
   } catch (error) {
+    console.error("Erro ao buscar agendamentos:", error); // Log do erro real
     res.status(500).json({ erro: "Erro ao buscar histórico de agendamentos" });
   }
 });
 
 app.post("/agendamentos", async (req, res) => {
-  const {
-    cliente_id,
-    recurso_id,
-    data_agendamento,
-    hora_agendamento,
-    hora_saida_agendamento,
-  } = req.body;
+  const { cliente_id, recurso_id, data_agendamento, hora_agendamento, hora_saida_agendamento } = req.body;
 
   if (!cliente_id || !recurso_id || !data_agendamento || !hora_agendamento || !hora_saida_agendamento) {
     return res.status(400).json({ erro: "Cliente, recurso, data e horários são obrigatórios." });
@@ -119,38 +124,25 @@ app.post("/agendamentos", async (req, res) => {
   }
 
   try {
-    // Validação RN01: Verificando choque de horários (Double-booking)
     const conflito = await pool.query(
       `SELECT * FROM agendamentos 
-       WHERE recurso_id = $1 
-       AND data_agendamento = $2 
+       WHERE recurso_id = $1 AND data_agendamento = $2 
        AND (hora_agendamento < $4 AND hora_saida_agendamento > $3)`,
       [recurso_id, data_agendamento, hora_agendamento, hora_saida_agendamento],
     );
 
     if (conflito.rows.length > 0) {
-      return res.status(409).json({
-        erro: "Choque de horário! Este recurso já está reservado neste período.",
-      });
+      return res.status(409).json({ erro: "Choque de horário! Este recurso já está reservado neste período." });
     }
 
-    // Se não houver conflito, realiza a inserção
     const { rows } = await pool.query(
-      `INSERT INTO agendamentos 
-      (cliente_id, recurso_id, data_agendamento, hora_agendamento, hora_saida_agendamento) 
+      `INSERT INTO agendamentos (cliente_id, recurso_id, data_agendamento, hora_agendamento, hora_saida_agendamento) 
       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [
-        cliente_id,
-        recurso_id,
-        data_agendamento,
-        hora_agendamento,
-        hora_saida_agendamento,
-      ],
+      [cliente_id, recurso_id, data_agendamento, hora_agendamento, hora_saida_agendamento],
     );
-
     res.status(201).json(rows[0]);
   } catch (error) {
-    console.error(error);
+    console.error("Erro ao cadastrar agendamento:", error); // Log do erro real
     res.status(500).json({ erro: "Erro ao registrar agendamento" });
   }
 });
@@ -164,6 +156,7 @@ app.put("/agendamentos/:id", async (req, res) => {
       [recurso_id, data_agendamento, hora_agendamento, hora_saida_agendamento, req.params.id],
     );
     if (conflito.rows.length) return res.status(409).json({ erro: "Choque de horário neste recurso." });
+    
     const { rows } = await pool.query(
       `UPDATE agendamentos SET cliente_id=$1, recurso_id=$2, data_agendamento=$3, hora_agendamento=$4, hora_saida_agendamento=$5
        WHERE id=$6 RETURNING *`,
@@ -172,6 +165,7 @@ app.put("/agendamentos/:id", async (req, res) => {
     if (!rows[0]) return res.status(404).json({ erro: "Agendamento não encontrado." });
     res.json(rows[0]);
   } catch (error) {
+    console.error("Erro ao atualizar agendamento:", error); // Log do erro real
     res.status(500).json({ erro: "Erro ao atualizar agendamento." });
   }
 });
@@ -181,12 +175,13 @@ app.delete("/agendamentos/:id", async (req, res) => {
     await pool.query("DELETE FROM agendamentos WHERE id = $1", [req.params.id]);
     res.status(204).send();
   } catch (error) {
+    console.error("Erro ao deletar agendamento:", error); // Log do erro real
     res.status(500).json({ erro: "Erro ao excluir agendamento." });
   }
 });
 
-// Inicia o servidor
+// Inicia o servidor usando a porta do .env ou 3007 como padrão
 const PORT = process.env.PORT || 3007;
-app.listen(PORT, () => {
-  console.log(`API da Oficina rodando na porta ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`API da Oficina ligada e ouvindo requisições na porta ${PORT}`);
 });

@@ -48,7 +48,7 @@ npm install
 npm run dev
 
 ```
-A API estará rodando em http://localhost:3000.
+A API estará rodando em http://localhost:3007.
 
 ### Passo 4: Executar o Frontend (Angular)
 

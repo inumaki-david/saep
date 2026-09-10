@@ -31,7 +31,7 @@ cd provasaepteste2026
 
 * Conecte-se ao seu PostgreSQL (via pgAdmin ou psql).
 
-* Crie um banco de dados chamado saep_agendamento_db.
+* Crie um banco de dados chamado *`saep_agendamento_db`*.
 
 * Execute o arquivo script_banco.sql (localizado na pasta database do repositório) para criar as tabelas e popular os recursos (Elevadores/Boxes) e o usuário administrador inicial.
 
@@ -43,9 +43,6 @@ cd backend
 
 # Instale as dependências
 npm install
-
-# Configure as variáveis de ambiente (.env) com as credenciais do seu banco PostgreSQL
-# Exemplo: DB_USER=postgres, DB_PASS=suasenha, DB_NAME=saep_agendamento_db
 
 # Inicie o servidor de desenvolvimento
 npm run dev

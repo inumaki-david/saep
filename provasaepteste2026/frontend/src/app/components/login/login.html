@@ -1,17 +1,48 @@
 <main class="login-page">
-	<section class="login-panel">
-		<p class="eyebrow">SAEP | OFICINA MECÂNICA</p>
-		<h1>Agenda de serviço<br /><em>sem conflito.</em></h1>
-		<p class="intro">Controle clientes, boxes e o ritmo da sua oficina em um só lugar.</p>
-		<form (ngSubmit)="entrar()" #form="ngForm">
-			<label for="email">E-mail</label>
-			<input id="email" name="email" type="email" [(ngModel)]="email" required placeholder="admin@oficina.com" />
-			<label for="senha">Senha</label>
-			<input id="senha" name="senha" type="password" [(ngModel)]="senha" required placeholder="Digite sua senha" />
-			<p class="error" *ngIf="erro || erroExterno">{{ erro || erroExterno }}</p>
-			<button type="submit" [disabled]="form.invalid || carregando">{{ carregando ? 'Conectando...' : 'Acessar painel' }} <span>→</span></button>
-		</form>
-		<small>Acesso administrativo</small>
-	</section>
-	<aside class="login-aside"><strong>Seu próximo serviço<br />começa aqui.</strong><p>Uma visão clara da operação para cada carro que entra pela sua porta.</p></aside>
+  <section class="login-panel">
+    <div class="brand-badge">
+      <span>●</span> SAEP | OFICINA MECÂNICA
+    </div>
+    <h1>Agenda de serviço<br /><em>sem conflito.</em></h1>
+    <p class="intro">Controle clientes, elevadores, boxes e o ritmo da sua oficina em um só lugar.</p>
+    
+    <form (ngSubmit)="entrar()" #form="ngForm">
+      <div class="field-group">
+        <label for="email">E-mail de Acesso</label>
+        <input id="email" name="email" type="email" [(ngModel)]="email" required placeholder="admin@oficina.com" autocomplete="email" />
+      </div>
+
+      <div class="field-group">
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" [(ngModel)]="senha" required placeholder="Digite sua senha" autocomplete="current-password" />
+      </div>
+
+      <div class="error" *ngIf="erro || erroExterno">
+        <span>⚠</span> {{ erro || erroExterno }}
+      </div>
+
+      <button type="submit" [disabled]="form.invalid || carregando">
+        <span>{{ carregando ? 'Conectando...' : 'Acessar painel' }}</span>
+        <span>→</span>
+      </button>
+    </form>
+
+    <small>Acesso administrativo seguro</small>
+  </section>
+
+  <aside class="login-aside">
+    <div class="aside-hero">
+      <strong>Seu próximo serviço<br />começa aqui.</strong>
+      <p>Uma visão clara da operação e alocação de recursos em tempo real para cada veículo que entra pela sua oficina.</p>
+      
+      <div class="aside-features">
+        <div class="feature-pill">
+          <span class="feature-dot"></span> Prevenção de Conflito
+        </div>
+        <div class="feature-pill">
+          <span class="feature-dot"></span> Gestão de Boxes
+        </div>
+      </div>
+    </div>
+  </aside>
 </main>

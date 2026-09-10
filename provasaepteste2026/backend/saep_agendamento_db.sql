@@ -1,4 +1,4 @@
-CREATE DATABASE saep_agendamento_db;
+-- CREATE DATABASE saep_agendamento_db;
 
 -- Execute os comandos abaixo conectado ao banco saep_agendamento_db.
 CREATE TABLE IF NOT EXISTS usuarios (

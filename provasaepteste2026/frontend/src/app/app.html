@@ -1,13 +1,171 @@
 <app-login *ngIf="!logado" [erroExterno]="erro" [carregando]="carregandoLogin" (submitted)="login($event)"></app-login>
+
 <app-layout *ngIf="logado" [usuario]="usuario" (logout)="logout()" (sectionChange)="mudarSecao($event)">
   <div class="content-area">
-    <div class="feedback success" *ngIf="aviso">{{ aviso }}</div>
-    <div class="feedback error" *ngIf="erro">{{ erro }}</div>
-    <section *ngIf="secao === 'visao-geral'"><div class="section-title"><div><span class="top-kicker">RESUMO OPERACIONAL</span><h1>Visão geral</h1></div><button class="primary" (click)="mudarSecao('agendamentos')">+ Novo agendamento</button></div>
-      <div class="stats"><article><span>CLIENTES ATIVOS</span><strong>{{ clientes.length }}</strong><small>cadastros na base</small></article><article><span>RECURSOS</span><strong>{{ recursos.length }}</strong><small>elevadores e boxes</small></article><article><span>AGENDAMENTOS</span><strong>{{ agendamentos.length }}</strong><small>no histórico</small></article></div>
-      <div class="recent"><div class="section-title"><div><span class="top-kicker">AGENDA</span><h2>Próximos serviços</h2></div><button class="text-button" (click)="mudarSecao('agendamentos')">Ver todos →</button></div><p *ngIf="!agendamentos.length" class="empty">Nenhum agendamento registrado.</p><div class="appointment-row" *ngFor="let item of agendamentos | slice:0:5"><strong>{{ item.data_agendamento | date:'dd/MM' }}</strong><span>{{ item.hora_agendamento | slice:0:5 }}</span><div><b>{{ item.cliente_nome }}</b><small>{{ item.recurso_nome }}</small></div></div></div>
+    <div class="feedback success" *ngIf="aviso">
+      <span>✔</span> {{ aviso }}
+    </div>
+    <div class="feedback error" *ngIf="erro">
+      <span>⚠</span> {{ erro }}
+    </div>
+
+    <!-- SEÇÃO: VISÃO GERAL -->
+    <section *ngIf="secao === 'visao-geral'">
+      <div class="section-title">
+        <div>
+          <span class="top-kicker">RESUMO OPERACIONAL</span>
+          <h1>Visão geral</h1>
+        </div>
+        <button class="primary" (click)="mudarSecao('agendamentos')">+ Novo agendamento</button>
+      </div>
+
+      <div class="stats">
+        <article>
+          <span>CLIENTES ATIVOS</span>
+          <strong>{{ clientes.length }}</strong>
+          <small>cadastros na base de dados</small>
+        </article>
+        <article>
+          <span>RECURSOS DISPONÍVEIS</span>
+          <strong>{{ recursos.length }}</strong>
+          <small>elevadores e boxes de serviço</small>
+        </article>
+        <article>
+          <span>AGENDAMENTOS</span>
+          <strong>{{ agendamentos.length }}</strong>
+          <small>registrados no sistema</small>
+        </article>
+      </div>
+
+      <div class="recent">
+        <div class="section-title">
+          <div>
+            <span class="top-kicker">AGENDA</span>
+            <h2>Próximos serviços</h2>
+          </div>
+          <button class="text-button" (click)="mudarSecao('agendamentos')">Ver todos →</button>
+        </div>
+        <p *ngIf="!agendamentos.length" class="empty">Nenhum agendamento registrado até o momento.</p>
+        <div class="appointment-row" *ngFor="let item of agendamentos | slice:0:5">
+          <strong>{{ item.data_agendamento | date:'dd/MM' }}</strong>
+          <span>{{ item.hora_agendamento | slice:0:5 }}</span>
+          <div>
+            <b>{{ item.cliente_nome }}</b>
+            <small>{{ item.recurso_nome }} (Saída prevista: {{ item.hora_saida_agendamento | slice:0:5 }})</small>
+          </div>
+        </div>
+      </div>
     </section>
-    <section *ngIf="secao === 'clientes'"><div class="section-title"><div><span class="top-kicker">CADASTRO</span><h1>Clientes</h1></div></div><div class="form-grid"><input placeholder="Nome completo *" [(ngModel)]="clienteForm.nome"><input placeholder="CPF ou documento *" [(ngModel)]="clienteForm.documento"><input placeholder="Telefone *" [(ngModel)]="clienteForm.telefone"><button class="primary" (click)="salvarCliente()">{{ clienteForm.id ? 'Atualizar' : 'Cadastrar' }}</button><button class="secondary" *ngIf="clienteForm.id" (click)="limparCliente()">Cancelar</button></div><div class="table-head"><input placeholder="Buscar por nome ou documento" [(ngModel)]="busca"><span>{{ clientesFiltrados.length }} registros</span></div><table><thead><tr><th>CLIENTE</th><th>DOCUMENTO</th><th>TELEFONE</th><th></th></tr></thead><tbody><tr *ngFor="let cliente of clientesFiltrados"><td><b>{{ cliente.nome }}</b></td><td>{{ cliente.documento }}</td><td>{{ cliente.telefone }}</td><td class="actions"><button (click)="editarCliente(cliente)">Editar</button><button (click)="excluirCliente(cliente.id)">Excluir</button></td></tr></tbody></table></section>
-    <section *ngIf="secao === 'agendamentos'"><div class="section-title"><div><span class="top-kicker">OPERAÇÃO</span><h1>Agendamentos</h1></div></div><div class="schedule-form"><select aria-label="Cliente" [(ngModel)]="agendaForm.cliente_id"><option value="">Selecione o cliente *</option><option *ngFor="let c of clientes" [value]="c.id">{{ c.nome }}</option></select><select aria-label="Recurso" [(ngModel)]="agendaForm.recurso_id"><option value="">Selecione o elevador ou box *</option><option *ngFor="let r of recursos" [value]="r.id">{{ r.nome }}</option></select><input aria-label="Data do agendamento" type="date" [(ngModel)]="agendaForm.data_agendamento"><input aria-label="Horário de entrada" type="time" [(ngModel)]="agendaForm.hora_agendamento"><input aria-label="Horário de saída" type="time" [(ngModel)]="agendaForm.hora_saida_agendamento"><button class="primary" (click)="salvarAgendamento()">Confirmar horário</button></div><table><thead><tr><th>DATA / HORÁRIO</th><th>CLIENTE</th><th>RECURSO</th><th></th></tr></thead><tbody><tr *ngFor="let item of agendamentos"><td><b>{{ item.data_agendamento | date:'dd/MM/yyyy' }}</b><small>{{ item.hora_agendamento | slice:0:5 }} - {{ item.hora_saida_agendamento | slice:0:5 }}</small></td><td>{{ item.cliente_nome }}</td><td><span class="resource-tag">{{ item.recurso_nome }}</span></td><td class="actions"><button (click)="excluirAgendamento(item.id)">Cancelar</button></td></tr></tbody></table></section>
+
+    <!-- SEÇÃO: CLIENTES -->
+    <section *ngIf="secao === 'clientes'">
+      <div class="section-title">
+        <div>
+          <span class="top-kicker">CADASTRO</span>
+          <h1>Clientes</h1>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-grid">
+          <input placeholder="Nome completo *" [(ngModel)]="clienteForm.nome" />
+          <input placeholder="CPF ou documento *" [(ngModel)]="clienteForm.documento" />
+          <input placeholder="Telefone *" [(ngModel)]="clienteForm.telefone" />
+          <button class="primary" (click)="salvarCliente()">
+            {{ clienteForm.id ? 'Atualizar Cliente' : 'Cadastrar Cliente' }}
+          </button>
+          <button class="secondary" *ngIf="clienteForm.id" (click)="limparCliente()">
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-head">
+          <input placeholder="🔍 Buscar por nome ou documento..." [(ngModel)]="busca" />
+          <span>{{ clientesFiltrados.length }} registros encontrados</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>CLIENTE</th>
+              <th>DOCUMENTO</th>
+              <th>TELEFONE</th>
+              <th class="actions">AÇÕES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cliente of clientesFiltrados">
+              <td><b>{{ cliente.nome }}</b></td>
+              <td>{{ cliente.documento }}</td>
+              <td>{{ cliente.telefone }}</td>
+              <td class="actions">
+                <button class="btn-edit" (click)="editarCliente(cliente)">Editar</button>
+                <button class="btn-delete" (click)="excluirCliente(cliente.id)">Excluir</button>
+              </td>
+            </tr>
+            <tr *ngIf="!clientesFiltrados.length">
+              <td colspan="4" class="empty">Nenhum cliente cadastrado ou encontrado na busca.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: AGENDAMENTOS -->
+    <section *ngIf="secao === 'agendamentos'">
+      <div class="section-title">
+        <div>
+          <span class="top-kicker">OPERAÇÃO</span>
+          <h1>Agendamentos</h1>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="schedule-form">
+          <select aria-label="Cliente" [(ngModel)]="agendaForm.cliente_id">
+            <option value="">Selecione o cliente *</option>
+            <option *ngFor="let c of clientes" [value]="c.id">{{ c.nome }}</option>
+          </select>
+          <select aria-label="Recurso" [(ngModel)]="agendaForm.recurso_id">
+            <option value="">Selecione o elevador ou box *</option>
+            <option *ngFor="let r of recursos" [value]="r.id">{{ r.nome }}</option>
+          </select>
+          <input aria-label="Data do agendamento" type="date" [(ngModel)]="agendaForm.data_agendamento" />
+          <input aria-label="Horário de entrada" type="time" [(ngModel)]="agendaForm.hora_agendamento" />
+          <input aria-label="Horário de saída" type="time" [(ngModel)]="agendaForm.hora_saida_agendamento" />
+          <button class="primary" (click)="salvarAgendamento()">Confirmar horário</button>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>DATA / HORÁRIO</th>
+              <th>CLIENTE</th>
+              <th>RECURSO</th>
+              <th class="actions">AÇÕES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of agendamentos">
+              <td>
+                <b>{{ item.data_agendamento | date:'dd/MM/yyyy' }}</b>
+                <small>{{ item.hora_agendamento | slice:0:5 }} às {{ item.hora_saida_agendamento | slice:0:5 }}</small>
+              </td>
+              <td>{{ item.cliente_nome }}</td>
+              <td><span class="resource-tag">⚙ {{ item.recurso_nome }}</span></td>
+              <td class="actions">
+                <button class="btn-delete" (click)="excluirAgendamento(item.id)">Cancelar</button>
+              </td>
+            </tr>
+            <tr *ngIf="!agendamentos.length">
+              <td colspan="4" class="empty">Nenhum agendamento agendado. Cadastre acima para alocar um elevador ou box.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 </app-layout>

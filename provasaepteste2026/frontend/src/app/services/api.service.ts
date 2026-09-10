@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  // A URL base aponta para o seu servidor Node.js que configuramos na porta 3007
-  private baseUrl = 'http://localhost:3007/login';
+  // A URL base aponta para o servidor Node.js na porta 3007
+  private baseUrl = 'http://127.0.0.1:3007';
 
   constructor(private http: HttpClient) {}
 

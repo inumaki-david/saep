@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600&family=Questrial&family=Ubuntu:wght@600;700&display=swap');
+
+:root {
+    --bg-color: #121414;
+    --surface-color: #1e2020;
+    --surface-high: #333535;
+    --text-main: #e2e2e2;
+    --text-muted: #c1c6d5;
+    --primary: #1275e2;
+    --primary-hover: #005db8;
+    --secondary: #f65c0e;
+    --secondary-hover: #d84b08;
+    --border-color: #414753;
+    --danger: #93000a;
+    --danger-text: #ffb4ab;
+    
+    --radius-btn: 8px;
+    --radius-card: 16px;
+    --radius-pill: 9999px;
+}
+
+body {
+    font-family: 'Questrial', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+}
+
+h1, h2, h3 { font-family: 'Ubuntu', sans-serif; color: var(--text-main); margin-top: 0; }
+
+/* ================= CABEÇALHO GLOBAL ================= */
+.header { 
+    background-color: var(--surface-color); 
+    border-bottom: 1px solid var(--border-color); 
+    padding: 16px 24px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+.header h1 { margin: 0; font-size: 20px; color: var(--text-main); }
+.header a { text-decoration: none; }
+
+/* ================= BOTÕES ================= */
+.btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    padding: 10px 16px;
+    border-radius: var(--radius-btn);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+.btn-primary { background-color: var(--primary); color: #fff; }
+.btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
+.btn-secondary { background-color: var(--secondary); color: #fff; }
+.btn-secondary:hover { background-color: var(--secondary-hover); transform: translateY(-2px); }
+.btn-danger { background-color: var(--danger); color: var(--danger-text); border: 1px solid #ffb4ab; }
+.btn-danger:hover { background-color: #690005; }
+.btn-outline { background-color: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+.btn-outline:hover { background-color: var(--surface-high); }
+
+/* ================= FORMULÁRIOS ================= */
+label { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; color: var(--text-muted); margin-bottom: 4px; display: block; margin-top: 16px; }
+input, select, textarea { width: 100%; padding: 12px; background-color: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-btn); font-family: 'Questrial', sans-serif; box-sizing: border-box; transition: all 0.3s ease; }
+input:focus, select:focus, textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 2px rgba(18, 117, 226, 0.25); }
+
+/* ================= CONTAINERS ================= */
+.container { padding: 24px; max-width: 1200px; margin: 0 auto; }
+.card { background-color: var(--surface-high); border-radius: var(--radius-card); padding: 24px; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.table-container { background-color: var(--surface-color); border-radius: var(--radius-card); border: 1px solid var(--border-color); overflow: hidden; margin-top: 24px; }
+table { width: 100%; border-collapse: collapse; }
+th { background-color: var(--surface-high); color: var(--text-muted); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; text-transform: uppercase; padding: 16px; text-align: left; }
+td { padding: 16px; border-top: 1px solid var(--border-color); }
+
+/* ================= BADGES ================= */
+.badge { font-family: 'Plus Jakarta Sans', sans-serif; padding: 4px 12px; border-radius: var(--radius-pill); font-size: 12px; }
+.badge-active { background-color: rgba(246, 92, 14, 0.2); color: var(--secondary); border: 1px solid var(--secondary); }
+.badge-neutral { background-color: rgba(18, 117, 226, 0.2); color: var(--primary); border: 1px solid var(--primary); }

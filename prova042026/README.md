@@ -22,7 +22,7 @@ O projeto inclui um script SQL completo (`script_vetsys.sql`) que já contém a 
 Abra o terminal e execute:
 ```bash
 # Clone este repositório
-git clone 
+git clone https://github.com/inumaki-david/saep/tree/main/prova042026
 
 ```
 
